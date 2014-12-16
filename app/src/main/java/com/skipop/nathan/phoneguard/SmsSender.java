@@ -1,5 +1,6 @@
 package com.skipop.nathan.phoneguard;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,14 +15,14 @@ public class SmsSender extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Intent intent = getIntent();
+        //String value = intent.getStringExtra("key"); //if it's a string you stored.
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_sms);
 
 
         EditText txtNumber = (EditText) findViewById(R.id.number1);
-        //final String valNumber = txtNumber.getText().toString();
-
-        Toast.makeText(SmsSender.this, "plop", Toast.LENGTH_SHORT).show();
 
         Button button = (Button) findViewById(R.id.btnSendSMS);
         button.setOnClickListener(new View.OnClickListener() {

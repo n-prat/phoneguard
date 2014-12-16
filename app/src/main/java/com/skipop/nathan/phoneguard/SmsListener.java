@@ -39,6 +39,7 @@ public class SmsListener extends BroadcastReceiver {
                         // Show alert
                         int duration = Toast.LENGTH_LONG;
 
+                        //TODO use an handler
                         if(msgBody.startsWith("phoneguard")){
                             String[] msgContent = msgBody.split(" ");
 

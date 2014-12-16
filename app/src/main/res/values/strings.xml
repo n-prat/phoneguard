@@ -8,7 +8,6 @@
     <string name="phone_label">Enter Phone Number:</string>
     <string name="sms_label">Enter SMS Message:</string>
     <string name="send_sms_label">Send SMS</string>
-    <string name="title_activity_main_activity2">MainActivity2</string>
     <string name="title_activity_send_sms">SendSms</string>
 
 </resources>
