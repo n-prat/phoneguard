@@ -12,12 +12,10 @@
         android:layout_height="wrap_content"
         android:text="ROOT"
         android:id="@+id/buttonRoot"
-        android:layout_marginTop="115dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="42dp"
-        android:layout_marginStart="42dp" />
+        android:onClick="buttonRootHandler"/>
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -25,8 +23,34 @@
         android:layout_height="wrap_content"
         android:text="SMS"
         android:id="@+id/buttonSms"
-        android:layout_below="@+id/buttonSms"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="150dp" />
+        android:layout_marginTop="45dp"
+        android:layout_below="@+id/buttonRoot"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="buttonSmsHandler"/>
+
+    <ToggleButton
+        android:id="@+id/togglebuttonwifi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOn="Wifi on"
+        android:textOff="Wifi off"
+        android:onClick="onToggleWifiClicked"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:checked="false" />
+
+    <ToggleButton
+        android:id="@+id/togglebuttondata"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOn="Data on"
+        android:textOff="Data off"
+        android:onClick="onToggleDataClicked"
+        android:checked="false"
+        android:layout_below="@+id/togglebuttonwifi"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
