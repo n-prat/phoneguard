@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="buttonSettings" type="id" />
+    <item name="buttonRoot" type="id" />
+    <item name="buttonSms" type="id" />
+    <item name="number1" type="id" />
+    <item name="btnSendSMS" type="id" />
+    <item name="editTextSMS" type="id" />
+
+</resources>

@@ -11,11 +11,10 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-
         <receiver
+            android:name=".SmsListener"
             android:exported="true"
-            android:label="SmsReceiver"
-            android:name=".SmsListener" >
+            android:label="SmsReceiver" >
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
@@ -23,13 +22,16 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:label="MainActivity" >
         </activity>
-
         <activity
-            android:label="@string/app_name"
-            android:name=".SmsSender"/>
+            android:name=".SmsSender"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
     </application>
 
 </manifest>
