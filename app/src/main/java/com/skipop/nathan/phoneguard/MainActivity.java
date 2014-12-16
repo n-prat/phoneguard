@@ -1,8 +1,6 @@
 package com.skipop.nathan.phoneguard;
 
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -12,12 +10,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.io.IOException;
-
 /**
  * Created by nathan on 12/15/14.
  */
 public class MainActivity extends ActionBarActivity {
+//public class MainActivity extends Activity {
     Button buttonRoot;
     Button buttonSms;
     Button buttonSettings;
@@ -30,18 +27,29 @@ public class MainActivity extends ActionBarActivity {
         }
     };
 
-    View.OnClickListener handlerButtonRoot = new View.OnClickListener() {
-        public void onClick(View v) {
-            final Runtime runtime = Runtime.getRuntime();
+    View.OnClickListener handlerButtonRoot;
+
+    {
+        handlerButtonRoot = new View.OnClickListener() {
+            public void onClick(View v) {
+            /*final Runtime runtime = Runtime.getRuntime();
             try {
                 Toast.makeText(MainActivity.this, "Rooting...", Toast.LENGTH_SHORT).show();
                 runtime.exec("su"); //or whatever command.
             }
             catch (IOException e) {
                 e.printStackTrace();
+            }*/
+                RootHandler rootHandler = new RootHandler();
+                if(rootHandler.checkRoot()){
+                    Toast.makeText(MainActivity.this, "Rooted(?)", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(MainActivity.this, "Probably not rooted", Toast.LENGTH_SHORT).show();
+                }
             }
-        }
-    };
+        };
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
