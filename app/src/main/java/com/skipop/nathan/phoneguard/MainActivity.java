@@ -21,6 +21,8 @@ public class MainActivity extends ActionBarActivity {
     //TODO (stop only when phone is found again(unlock, security off message?)
     //TODO on sim card change -> send new number to the old on
 
+    //TODO add PhotoHandler -> can take photo without sound (upload?)
+
     /** Called when the user touches the button */
     public void buttonSmsHandler(View view) {
         // Do something in response to button click

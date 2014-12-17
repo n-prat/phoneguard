@@ -114,6 +114,9 @@ public class SmsListener extends BroadcastReceiver {
                         passwd = msgContent[2]; //3rd field ex:"phoneguard password azerty"
                         toast = Toast.makeText(mContext, "PhoneGuard: Password: " + passwd, duration);
                         toast.show();
+
+                        //TODO checked if received password is the same as the one registered
+                        // in settings
                     } else {
                         toast = Toast.makeText(mContext, "PhoneGuard: Password Empty...", duration);
                         toast.show();
