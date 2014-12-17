@@ -17,8 +17,8 @@ import android.widget.Toast;
  */
 public class SmsListener extends BroadcastReceiver {
     Context mContext = null;
-    final String tag = ".onReceive";
-    private SharedPreferences preferences;
+    final String tag = "PhoneGuard SMS";
+
     // Get the object of SmsManager
     final SmsManager sms = SmsManager.getDefault();
     SmsMessage[] messages;
@@ -84,6 +84,10 @@ public class SmsListener extends BroadcastReceiver {
                     processSms(message);
                 }
             }
+        }
+        else{
+            //we have received the wrong Intent
+            Log.d(tag, "SMS_RECEIVED wrong intent");
         }
     }
 
