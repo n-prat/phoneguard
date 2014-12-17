@@ -26,6 +26,7 @@ public class MainActivity extends ActionBarActivity {
 
     //TODO add PhotoHandler -> can take photo without sound (upload?)
 
+    //TODO implement location services
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
