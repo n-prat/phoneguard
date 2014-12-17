@@ -7,16 +7,6 @@
     tools:context="com.skipop.nathan.phoneguard.MainActivity"
     android:id="@+id/skipop">
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SMS"
-        android:id="@+id/buttonSms"
-        android:layout_marginTop="45dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="buttonSmsHandler"/>
 
     <ToggleButton
         android:id="@+id/togglebuttonwifi"

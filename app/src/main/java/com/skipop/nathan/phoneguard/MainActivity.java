@@ -84,14 +84,6 @@ public class MainActivity extends ActionBarActivity {
             connectionManager.manageData(false);
     }
 
-    /** Called when the user touches the button */
-    public void buttonSmsHandler(View view) {
-        // Do something in response to button click
-        Intent myIntent = new Intent(MainActivity.this, SmsActivity.class);
-        //myIntent.putExtra("argu1", 5); //Optional parameters
-        startActivity(myIntent);
-    }
-
     public SecurityManager getSecurityManager() {
         return securityManager;
     }
