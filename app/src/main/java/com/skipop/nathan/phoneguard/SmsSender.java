@@ -59,12 +59,6 @@ public class SmsSender extends ActionBarActivity {
                 Intent myIntent = new Intent(SmsSender.this, SettingsActivity.class);
                 startActivity(myIntent);
                 return true;
-            case R.id.new_game:
-                //newGame();
-                return true;
-            case R.id.help:
-                //showHelp();
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

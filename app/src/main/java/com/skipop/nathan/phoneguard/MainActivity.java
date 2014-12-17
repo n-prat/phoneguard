@@ -63,12 +63,6 @@ public class MainActivity extends ActionBarActivity {
                 Intent myIntent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(myIntent);
                 return true;
-            case R.id.new_game:
-                //newGame();
-                return true;
-            case R.id.help:
-                //showHelp();
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
