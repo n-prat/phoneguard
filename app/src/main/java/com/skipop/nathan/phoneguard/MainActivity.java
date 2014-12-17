@@ -7,13 +7,15 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 /**
  * Created by nathan on 12/15/14.
  */
 public class MainActivity extends ActionBarActivity {
+    final String tag = "PhoneGuard Main";
+    SecurityManager securityManager;
+
     //TODO receive boot event
     //TODO-> if security was on before : restart service
     //TODO-> if security and new sim : send new number to old one
@@ -33,6 +35,9 @@ public class MainActivity extends ActionBarActivity {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         setContentView(R.layout.activity_main);
+
+        securityManager= new SecurityManager(MainActivity.this);
+        securityManager.isSecurityActivated();
     }
 
     @Override
@@ -84,6 +89,10 @@ public class MainActivity extends ActionBarActivity {
         Intent myIntent = new Intent(MainActivity.this, SmsSender.class);
         //myIntent.putExtra("argu1", 5); //Optional parameters
         startActivity(myIntent);
+    }
+
+    public SecurityManager getSecurityManager() {
+        return securityManager;
     }
 
 }
