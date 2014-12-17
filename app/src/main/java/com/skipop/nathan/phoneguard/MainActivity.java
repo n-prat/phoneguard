@@ -13,6 +13,13 @@ import android.widget.ToggleButton;
  * Created by nathan on 12/15/14.
  */
 public class MainActivity extends ActionBarActivity {
+    //TODO receive boot event
+    //TODO-> if security was on before : restart service
+    //TODO-> if security and new sim : send new number to old one
+    //TODO implement service?
+    //TODO (start when security is enabled, restart on boot if necessary)
+    //TODO (stop only when phone is found again(unlock, security off message?)
+    //TODO on sim card change -> send new number to the old on
 
     /** Called when the user touches the button */
     public void buttonSmsHandler(View view) {

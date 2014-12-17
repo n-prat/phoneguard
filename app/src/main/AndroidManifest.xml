@@ -2,12 +2,22 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.skipop.nathan.phoneguard" >
 
+    <!--to handle SMS-->
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
+
+    <!--to read/change wifi state-->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+    <!--to read/change data state-->
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+
+    <!--to check for sim change-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <!--useless unless system app-->
     <uses-permission android:name="android.permission.MODIFY_PHONE_STATE" />
 
     <application
@@ -25,6 +35,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--TODO receiver for BOOT_COMPLETED to check for sim change-->
+
+        <!--TODO receiver for SIM_STATE_CHANGED to check for sim change-->
 
         <receiver
             android:name=".SmsListener"

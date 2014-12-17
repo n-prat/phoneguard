@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 
 public class SmsSender extends ActionBarActivity {
+    //TODO do not send sms to number outside country
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
