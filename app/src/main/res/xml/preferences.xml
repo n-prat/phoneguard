@@ -5,9 +5,10 @@
         android:title="Settings 1">
 
         <CheckBoxPreference
-            android:key="checkbox_root"
-            android:title="root"
-            android:summary="checked if app has root access" />
+            android:key="setting_root"
+            android:title="ROOT"
+            android:summary="Allow app to use root access"
+            android:defaultValue="false"/>
 
     </PreferenceCategory>
 
@@ -16,10 +17,11 @@
 
         <!--TODO do not store password in clear text-->
         <EditTextPreference
-            android:key="edittext_preference"
-            android:title="password"
-            android:summary="enter security password here"
-            android:dialogTitle="enter new password here" />
+            android:key="setting_password"
+            android:title="Password"
+            android:summary="Enter security password here"
+            android:dialogTitle="Enter new password"
+            android:defaultValue="changeme"/>
 
     </PreferenceCategory>
 

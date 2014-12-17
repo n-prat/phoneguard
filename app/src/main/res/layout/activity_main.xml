@@ -8,23 +8,12 @@
     android:id="@+id/skipop">
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ROOT"
-        android:id="@+id/buttonRoot"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="buttonRootHandler"/>
-
-    <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="SMS"
         android:id="@+id/buttonSms"
         android:layout_marginTop="45dp"
-        android:layout_below="@+id/buttonRoot"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:onClick="buttonSmsHandler"/>

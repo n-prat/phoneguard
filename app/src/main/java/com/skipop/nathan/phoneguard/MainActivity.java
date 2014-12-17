@@ -2,6 +2,7 @@ package com.skipop.nathan.phoneguard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,29 +24,13 @@ public class MainActivity extends ActionBarActivity {
 
     //TODO add PhotoHandler -> can take photo without sound (upload?)
 
-    /** Called when the user touches the button */
-    public void buttonSmsHandler(View view) {
-        // Do something in response to button click
-        Intent myIntent = new Intent(MainActivity.this, SmsSender.class);
-        //myIntent.putExtra("argu1", 5); //Optional parameters
-        startActivity(myIntent);
-    }
-
-    /** Called when the user touches the button */
-    public void buttonRootHandler(View view) {
-        // Do something in response to button click
-        RootHandler rootHandler = new RootHandler();
-        if(rootHandler.checkRoot()){
-            Toast.makeText(MainActivity.this, "Rooted(?)", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            Toast.makeText(MainActivity.this, "Probably not rooted", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Properly set default values upon first launch
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         setContentView(R.layout.activity_main);
     }
@@ -92,4 +77,13 @@ public class MainActivity extends ActionBarActivity {
         else
             connectionManager.manageData(false);
     }
+
+    /** Called when the user touches the button */
+    public void buttonSmsHandler(View view) {
+        // Do something in response to button click
+        Intent myIntent = new Intent(MainActivity.this, SmsSender.class);
+        //myIntent.putExtra("argu1", 5); //Optional parameters
+        startActivity(myIntent);
+    }
+
 }
