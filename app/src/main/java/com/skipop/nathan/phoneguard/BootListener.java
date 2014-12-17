@@ -21,11 +21,11 @@ public class BootListener extends BroadcastReceiver {
             //we have received the correct Intent
             Log.d(tag, "BOOT_COMPLETED");
 
-            Toast toast;
-            int duration = Toast.LENGTH_SHORT;
-
-            toast = Toast.makeText(mContext, "PhoneGuard: Boot completed ", duration);
-            toast.show();
+            SecurityManager securityManager = new SecurityManager(context);
+            boolean previousState = securityManager.isSecurityActivated();
+            Log.d(tag, "security was "+previousState);
+            int duration = Toast.LENGTH_LONG;
+            Toast.makeText(mContext, "PhoneGuard: Security was "+previousState, duration).show();
         }
         else{
             //we have received the wrong Intent
