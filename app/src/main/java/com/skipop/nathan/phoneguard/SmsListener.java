@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.Telephony;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
@@ -112,11 +113,24 @@ public class SmsListener extends BroadcastReceiver {
                         //if(passwd.isEmpty()){
                         String passwd;
                         passwd = msgContent[2]; //3rd field ex:"phoneguard password azerty"
-                        toast = Toast.makeText(mContext, "PhoneGuard: Password: " + passwd, duration);
-                        toast.show();
 
-                        //TODO checked if received password is the same as the one registered
-                        // in settings
+                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+                        String passwdSet = prefs.getString("setting_password","not found");
+
+                        if(passwd.equals(passwdSet)){
+                            //we have a match
+                            Toast.makeText(mContext, "Password Accepted ", Toast.LENGTH_SHORT).show();
+
+                            //TODO activate security mode -> new file?
+                            //TODO service on?
+
+                            //TODO send back confirmation text with command list
+                        }
+                        else{
+                            //wrong password
+                            Toast.makeText(mContext, "Password Refused ", Toast.LENGTH_SHORT).show();
+                        }
+
                     } else {
                         toast = Toast.makeText(mContext, "PhoneGuard: Password Empty...", duration);
                         toast.show();
