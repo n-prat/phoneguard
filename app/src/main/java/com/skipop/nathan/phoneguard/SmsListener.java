@@ -4,7 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Telephony;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
@@ -51,35 +53,37 @@ public class SmsListener extends BroadcastReceiver {
             //we have received the correct Intent
             Log.d(tag, "SMS_RECEIVED");
 
-            //Pre-KitKat way to handle SMS
-            Object[] data = (Object[]) bundle.get("pdus");
-            for (Object pdu : data) {
-                Log.d(tag, "legacy SMS implementation");
-                SmsMessage message = SmsMessage.createFromPdu((byte[]) pdu);
+            if (Build.VERSION.SDK_INT < 19) {
+                //Pre-KitKat way to handle SMS
+                Object[] data = (Object[]) bundle.get("pdus");
+                for (Object pdu : data) {
+                    Log.d(tag, "legacy SMS implementation");
+                    SmsMessage message = SmsMessage.createFromPdu((byte[]) pdu);
 
-                if (message == null) {
-                    Log.e(tag, "SMS message is null -- ABORT");
-                    break;
+                    if (message == null) {
+                        Log.e(tag, "SMS message is null -- ABORT");
+                        break;
+                    }
+
+                    smsOriginatingAddress = message.getDisplayOriginatingAddress();
+                    smsDisplayMessage = message.getDisplayMessageBody(); // see getMessageBody();
+                    processSms(message);
+                    //processReceivedSms(smsOriginatingAddress, smsDisplayMessage);
+
                 }
-
-                smsOriginatingAddress = message.getDisplayOriginatingAddress();
-                smsDisplayMessage = message.getDisplayMessageBody(); // see getMessageBody();
-                processSms(message);
-                //processReceivedSms(smsOriginatingAddress, smsDisplayMessage);
-
+            } else {
+                //The KitKat way  : API level 19
+                for (SmsMessage message : Telephony.Sms.Intents.getMessagesFromIntent(intent)) {
+                    Log.d(tag, "KitKat or newer");
+                    if (message == null) {
+                        Log.e(tag, "SMS message is null -- ABORT");
+                        break;
+                    }
+                    smsOriginatingAddress = message.getDisplayOriginatingAddress();
+                    smsDisplayMessage = message.getDisplayMessageBody(); //see getMessageBody();
+                    processSms(message);
+                }
             }
-
-            /*//The KitKat way  : API level 19
-            for (SmsMessage message : Telephony.Sms.Intents.getMessagesFromIntent(intent)) {
-                Log.d(tag, "KitKat or newer");
-                if (message == null) {
-                    Log.e(tag, "SMS message is null -- ABORT");
-                    break;
-                }
-                smsOriginatingAddress = message.getDisplayOriginatingAddress();
-                smsDisplayMessage = message.getDisplayMessageBody(); //see getMessageBody();
-                processReceivedSms(smsOriginatingAddress, smsDisplayMessage);
-            }*/
         }
     }
 
@@ -100,7 +104,7 @@ public class SmsListener extends BroadcastReceiver {
 
                 if (msgContent[1].compareToIgnoreCase("password") == 0) {
                     //"password" command
-                     if (msgContent.length > 2) {
+                    if (msgContent.length > 2) {
                         //if(passwd.isEmpty()){
                         String passwd;
                         passwd = msgContent[2]; //3rd field ex:"phoneguard password azerty"
@@ -110,9 +114,9 @@ public class SmsListener extends BroadcastReceiver {
                         toast = Toast.makeText(mContext, "PhoneGuard: Password Empty...", duration);
                         toast.show();
                     }
-                } else if(msgContent[1].compareToIgnoreCase("othercommand") == 0){
+                } else if (msgContent[1].compareToIgnoreCase("othercommand") == 0) {
 
-                }else {
+                } else {
                     toast = Toast.makeText(mContext, "PhoneGuard: Invalid Command", duration);
                     toast.show();
                 }
