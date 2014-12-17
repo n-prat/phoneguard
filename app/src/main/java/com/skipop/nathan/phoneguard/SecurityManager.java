@@ -15,8 +15,6 @@ public class SecurityManager {
     Context mContext;
     final String tag = "PhoneGuard SecurityManager";
 
-    //TODO file descriptor to check previous state
-
     public SecurityManager(Context context) {
         mContext = context;
     }
@@ -35,7 +33,7 @@ public class SecurityManager {
 
     //turn on security
     public void securityOn(){
-        Log.d(tag, "securityOn");
+        Log.d(tag, "turning security On");
 
         //writing something just to be sure file exists
         String string = "Hello world!";
@@ -52,9 +50,8 @@ public class SecurityManager {
 
 
     public void securityOff(){
-        Log.d(tag, "securityOff");
+        Log.d(tag, "turning security Off");
 
-        //TODO destroy file
         if(isSecurityActivated()){
             file.delete();
         }

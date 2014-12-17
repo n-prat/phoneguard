@@ -20,11 +20,6 @@ public class SmsListener extends BroadcastReceiver {
     Context mContext = null;
     final String tag = "PhoneGuard SMS";
 
-    // Get the object of SmsManager
-    final SmsManager sms = SmsManager.getDefault();
-    SmsMessage[] messages;
-
-
     public SmsListener(Context mContext) {
         this.mContext = mContext;
     }
@@ -102,6 +97,7 @@ public class SmsListener extends BroadcastReceiver {
             Log.d(tag, "command received");
 
             SecurityManager securityManager = new SecurityManager(mContext);
+            SmsSender smsSender = new SmsSender(mContext);
 
             String[] msgContent = msgBody.split(" ");
             int duration = Toast.LENGTH_SHORT;
@@ -124,12 +120,14 @@ public class SmsListener extends BroadcastReceiver {
                         if(passwd.equals(passwdSet)){
                             Log.d(tag, "password match");
                             //we have a match
+
                             Toast.makeText(mContext, "Password Accepted ", Toast.LENGTH_SHORT).show();
 
                             //TODO activate security mode
                             if(!securityManager.isSecurityActivated()){
-                                Log.d(tag, "security on");
+                                Log.d(tag, "turning security on");
                                 securityManager.securityOn();
+                                smsSender.sendSecurityChanged(msgAddress);
                             }
                             else{
                                 Log.d(tag, "security was already on");
@@ -155,7 +153,14 @@ public class SmsListener extends BroadcastReceiver {
                     if(msgContent.length>2){
                         if (msgContent[2].compareToIgnoreCase("off") == 0){
                             Log.d(tag, "security command off");
-                            securityManager.securityOff();
+                            if(securityManager.isSecurityActivated()){
+                                Log.d(tag, "turning security off");
+                                securityManager.securityOff();
+                                smsSender.sendSecurityChanged(msgAddress);
+                            }
+                            else{
+                                Log.d(tag, "security was already off");
+                            }
                         }
                         else{
                             Log.d(tag, "security command invalid");
@@ -171,13 +176,14 @@ public class SmsListener extends BroadcastReceiver {
                 else {
                     toast = Toast.makeText(mContext, "PhoneGuard: Invalid Command", duration);
                     toast.show();
+                    smsSender.sendCommandList(msgAddress);
                 }
             } else {
                 toast = Toast.makeText(mContext, "PhoneGuard: Empty Command", duration);
                 toast.show();
+                smsSender.sendCommandList(msgAddress);
             }
         }
     }
-
 
 }//end of class
