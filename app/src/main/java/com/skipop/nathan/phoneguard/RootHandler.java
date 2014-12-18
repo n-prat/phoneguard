@@ -34,9 +34,9 @@ public class RootHandler {
         isRooted = result1 || result2;
 
         if (isRooted)
-            Toast.makeText(mContext, "Rooted(?)", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "Root Access granted", Toast.LENGTH_SHORT).show();
         else
-            Toast.makeText(mContext, "Probably not rooted", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "Can't get Root Access", Toast.LENGTH_SHORT).show();
 
 
         Log.d(tag, "Result: " + isRooted);

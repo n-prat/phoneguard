@@ -3,11 +3,13 @@ package com.skipop.nathan.phoneguard;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 public class SettingsFragment extends PreferenceFragment
@@ -48,7 +50,12 @@ public class SettingsFragment extends PreferenceFragment
             RootHandler rootHandler = new RootHandler(this.getActivity());
 
             if(state){
-                rootHandler.checkRoot();
+                //checkRoot will ask for root if necessary(su prompt)
+                boolean isRooted = rootHandler.checkRoot();
+
+                //we set the checkbox state to the result of checkRoot
+                CheckBoxPreference checkboxRoot = (CheckBoxPreference) findPreference(KEY_ROOT);
+                checkboxRoot.setChecked(isRooted);
             }
         }
         /*if (key.equals(KEY_ROOT)) {
