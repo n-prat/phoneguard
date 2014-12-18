@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,9 +29,18 @@ public class MainActivity extends ActionBarActivity {
 
     //TODO implement location services
 
+    //TODO disclaimer on start
+    //TODO device admin -> add setting
+    //TODO settings to control data, send sms, keyword, photo, email...
+    //TODO store a list oh authenticated numberS
+    //TODO help in settings
+    //TODO switch to xml.strings to help translation
+    //TODO option to install as system/app
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(tag, "onCreate: ");
 
         // Properly set default values upon first launch
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
@@ -50,6 +60,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(tag, "onOptionsItemSelected ");
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.settings:
@@ -62,6 +73,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onToggleWifiClicked(View view) {
+        Log.d(tag, "onToggleWifiClicked ");
         ToggleButton toggle = (ToggleButton) findViewById(R.id.togglebuttonwifi);
 
         // Is the toggle on?
@@ -73,6 +85,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onToggleDataClicked(View view) {
+        Log.d(tag, "onToggleDataClicked ");
         ToggleButton toggle = (ToggleButton) findViewById(R.id.togglebuttondata);
 
         // Is the toggle on?

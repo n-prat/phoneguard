@@ -46,7 +46,6 @@ public class SettingsFragment extends PreferenceFragment
             boolean state = prefs.getBoolean(KEY_ROOT, false);
 
             RootHandler rootHandler = new RootHandler(this.getActivity());
-            rootHandler.checkRoot();
 
             if(state){
                 rootHandler.checkRoot();

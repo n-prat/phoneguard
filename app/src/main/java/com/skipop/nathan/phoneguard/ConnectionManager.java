@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.lang.reflect.Field;
@@ -15,6 +16,7 @@ import java.lang.reflect.Method;
  */
 public class ConnectionManager {
     Context mContext;
+    final String tag = "PhoneGuard ConnectionManager";
 
     public ConnectionManager() {
         this.mContext = null;
@@ -25,11 +27,13 @@ public class ConnectionManager {
     }
 
     public boolean checkWifiState(){
+        Log.d(tag, "checkWifiState");
         WifiManager wifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
         return wifiManager.isWifiEnabled();
     }
 
     public boolean setWifiState(boolean state){
+        Log.d(tag, "setWifiState");
         WifiManager wifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
         wifiManager.setWifiEnabled(state);
 
@@ -46,6 +50,7 @@ public class ConnectionManager {
 
 
     public void manageData(boolean enable){
+        Log.d(tag, "manageData: "+enable);
         //Toast.makeText(mContext, "Method 1 true", Toast.LENGTH_SHORT).show();
         //setMobileDataEnabled1(true);
         // -> turn off data?
@@ -68,6 +73,7 @@ public class ConnectionManager {
     }
 
     private void setMobileDataEnabled1(boolean enabled) {
+        Log.d(tag, "setMobileDataEnabled1: "+enabled);
         //Hack for KitKat:http://stackoverflow.com/questions/21511216/toggle-mobile-data-programmatically-on-android-4-4-2
         ConnectivityManager dataManager;
         dataManager  = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -90,6 +96,7 @@ public class ConnectionManager {
     }
 
     private void setMobileDataEnabled2(Context context, boolean enabled) {
+        Log.d(tag, "setMobileDataEnabled2: "+enabled);
         //http://stackoverflow.com/questions/12535101/how-can-i-turn-off-3g-data-programmatically-on-android
         final ConnectivityManager conman = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
