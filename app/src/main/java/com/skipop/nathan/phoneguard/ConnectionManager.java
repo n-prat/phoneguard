@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -18,28 +19,28 @@ public class ConnectionManager {
     Context mContext;
     final String tag = "PhoneGuard ConnectionManager";
 
-    public ConnectionManager() {
+    /*public ConnectionManager() {
         this.mContext = null;
-    }
+    }*/
 
     public ConnectionManager(Context mContext) {
         this.mContext = mContext;
     }
 
-    public boolean checkWifiState(){
+    public boolean checkWifiState() {
         Log.d(tag, "checkWifiState");
         WifiManager wifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
         return wifiManager.isWifiEnabled();
     }
 
-    public boolean setWifiState(boolean state){
+    public boolean setWifiState(boolean state) {
         Log.d(tag, "setWifiState");
         WifiManager wifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
         wifiManager.setWifiEnabled(state);
 
         boolean result = (wifiManager.isWifiEnabled() == state);
 
-        if(result)
+        if (result)
             Toast.makeText(mContext, "Wifi(?)", Toast.LENGTH_SHORT).show();
         else
             Toast.makeText(mContext, "Wifi(??)", Toast.LENGTH_SHORT).show();
@@ -48,35 +49,27 @@ public class ConnectionManager {
     }
 
 
+    public void manageData(boolean enable) {
+        Log.d(tag, "manageData: " + enable);
 
-    public void manageData(boolean enable){
-        Log.d(tag, "manageData: "+enable);
-        //Toast.makeText(mContext, "Method 1 true", Toast.LENGTH_SHORT).show();
-        //setMobileDataEnabled1(true);
-        // -> turn off data?
+        Log.d(tag, "Trying method2: " + enable);
+        setMobileDataEnabled2(mContext, enable);
+    }
 
-        //Toast.makeText(mContext, "Method 1 false", Toast.LENGTH_SHORT).show();
-        //setMobileDataEnabled1(false);
-        // -> turn off data?
+    public int getDataState() {
+        Log.d(tag, "getDataState: ");
 
-        Toast.makeText(mContext, "Method 2 "+enable, Toast.LENGTH_SHORT).show();
-        setMobileDataEnabled2(mContext,enable);
-        /*if(enable){
-            Toast.makeText(mContext, "Method 2 true", Toast.LENGTH_SHORT).show();
-            setMobileDataEnabled2(mContext,true);
-            // data on -> do nothing || data off -> data on
-        }
-        else{
-            Toast.makeText(mContext, "Method 2 false", Toast.LENGTH_SHORT).show();
-            setMobileDataEnabled2(mContext,false);
-        }*/
+        TelephonyManager TelephonyManager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+        int state = TelephonyManager.getDataState();
+
+        return state;
     }
 
     private void setMobileDataEnabled1(boolean enabled) {
-        Log.d(tag, "setMobileDataEnabled1: "+enabled);
+        Log.d(tag, "setMobileDataEnabled1: " + enabled);
         //Hack for KitKat:http://stackoverflow.com/questions/21511216/toggle-mobile-data-programmatically-on-android-4-4-2
         ConnectivityManager dataManager;
-        dataManager  = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        dataManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         Method dataMtd = null;
         try {
             dataMtd = ConnectivityManager.class.getDeclaredMethod("setMobileDataEnabled", boolean.class);
@@ -96,7 +89,7 @@ public class ConnectionManager {
     }
 
     private void setMobileDataEnabled2(Context context, boolean enabled) {
-        Log.d(tag, "setMobileDataEnabled2: "+enabled);
+        Log.d(tag, "setMobileDataEnabled2: " + enabled);
         //http://stackoverflow.com/questions/12535101/how-can-i-turn-off-3g-data-programmatically-on-android
         final ConnectivityManager conman = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.telecom.TelecomManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,7 +16,8 @@ import android.widget.ToggleButton;
  */
 public class MainActivity extends ActionBarActivity {
     final String tag = "PhoneGuard Main";
-    SecurityManager securityManager;
+    SecurityManager securityManager = new SecurityManager(MainActivity.this);
+    ConnectionManager connectionManager = new ConnectionManager(MainActivity.this);
 
     //TODO receive boot event
     //TODO-> if security was on before : restart service
@@ -23,6 +25,7 @@ public class MainActivity extends ActionBarActivity {
     //TODO implement service?
     //TODO (start when security is enabled, restart on boot if necessary)
     //TODO (stop only when phone is found again(unlock, security off message?)
+
     //TODO on sim card change -> send new number to the old on
 
     //TODO add PhotoHandler -> can take photo without sound (upload?)
@@ -30,11 +33,17 @@ public class MainActivity extends ActionBarActivity {
     //TODO implement location services
 
     //TODO disclaimer on start
+
     //TODO device admin -> add setting
+
     //TODO settings to control data, send sms, keyword, photo, email...
+
     //TODO store a list oh authenticated numberS
+
     //TODO help in settings
+
     //TODO switch to xml.strings to help translation
+
     //TODO option to install as system/app
 
     @Override
@@ -47,8 +56,17 @@ public class MainActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_main);
 
-        securityManager= new SecurityManager(MainActivity.this);
         securityManager.isSecurityActivated();
+
+        //set data toggle to the correct value
+        ToggleButton toggleData = (ToggleButton) findViewById(R.id.togglebuttondata);
+        int dataState = connectionManager.getDataState();
+        boolean dataConnectedOrConnecting = (dataState == 1 || dataState == 2);
+        toggleData.setChecked(dataConnectedOrConnecting);
+
+        //set wifi toggle to the correct value
+        ToggleButton toggleWifi = (ToggleButton) findViewById(R.id.togglebuttonwifi);
+        toggleWifi.setChecked(connectionManager.checkWifiState());
     }
 
     @Override

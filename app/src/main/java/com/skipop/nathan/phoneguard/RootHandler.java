@@ -21,7 +21,6 @@ public class RootHandler {
         this.mContext = Context;
     }
 
-    //TODO not working: does not ask for root on real device
     public boolean checkRoot() {
         boolean isRooted = false, result1 = false, result2 = false;
         boolean isApkInstalled = new File("/system/app/Superuser.apk").exists();
