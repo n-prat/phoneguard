@@ -3,6 +3,8 @@ package com.skipop.nathan.phoneguard;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
+import android.os.Build;
+import android.telephony.SmsMessage;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -52,8 +54,15 @@ class ConnectionManager {
     public void manageData(boolean enable) {
         Log.d(tag, "manageData: " + enable);
 
-        Log.d(tag, "Trying method2: " + enable);
-        setMobileDataEnabled2(mContext, enable);
+        // DO NOT TRY on Lollipop or FC!
+        if (Build.VERSION.SDK_INT >= 21) {
+            // Lollipop
+            Log.d(tag, "Lollipop -> doing nothing... ");
+        }
+        else{
+            Log.d(tag, "Trying method2: " + enable);
+            setMobileDataEnabled2(mContext, enable);
+        }
     }
 
     public int getDataState() {
