@@ -39,12 +39,6 @@ public class MainActivity extends ActionBarActivity {
     //TODO store a list oh authenticated numberS
     //TODO store those numbers in a file(allows to survive reboot, sim change, etc)
 
-    //TODO help in settings
-
-    //TODO switch to xml.strings to help translation
-
-    //TODO option to install as system/app
-
     //TODO geofencing :-> restart tracking when moving
     //TODO idem with Activity detection
 
@@ -113,6 +107,10 @@ public class MainActivity extends ActionBarActivity {
             case R.id.settings:
                 Intent myIntent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(myIntent);
+                return true;
+            case R.id.help:
+                Intent myIntent2 = new Intent(MainActivity.this, HelpActivity.class);
+                startActivity(myIntent2);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

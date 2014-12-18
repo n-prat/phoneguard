@@ -48,6 +48,7 @@ class RootHandler {
         //return sourceApk;
     }
 
+    //TODO use an external apk to move it
     public void installToSystem(){
         Log.d(tag, "installToSystem ");
 
