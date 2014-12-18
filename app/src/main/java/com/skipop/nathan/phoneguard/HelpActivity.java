@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebView;
 
 
 public class HelpActivity extends ActionBarActivity {
@@ -14,6 +15,8 @@ public class HelpActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.d(tag, "onCreate ");
         setContentView(R.layout.activity_help);
     }
 
@@ -32,21 +35,25 @@ public class HelpActivity extends ActionBarActivity {
         Log.d(tag, "onOptionsItemSelected ");
 
         int id = item.getItemId();
+        WebView myWebView = (WebView) findViewById(R.id.webView);
 
-        //TODO use proper Activities to show the proper menus
+        //TODO create the HTML files
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_about:
-                Intent myIntent = new Intent(HelpActivity.this, SettingsActivity.class);
-                startActivity(myIntent);
+                //Intent myIntent = new Intent(HelpActivity.this, SettingsActivity.class);
+                //startActivity(myIntent);
+                myWebView.loadUrl("http://google.de");
                 return true;
             case R.id.action_license:
-                Intent myIntent2 = new Intent(HelpActivity.this, HelpActivity.class);
-                startActivity(myIntent2);
+                //Intent myIntent2 = new Intent(HelpActivity.this, HelpActivity.class);
+                //startActivity(myIntent2);
+                myWebView.loadUrl("http://google.fr");
                 return true;
             case R.id.action_contact:
-                Intent myIntent3 = new Intent(HelpActivity.this, HelpActivity.class);
-                startActivity(myIntent3);
+                //Intent myIntent3 = new Intent(HelpActivity.this, HelpActivity.class);
+                //startActivity(myIntent3);
+                myWebView.loadUrl("http://google.com");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

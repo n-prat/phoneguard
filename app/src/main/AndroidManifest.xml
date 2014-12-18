@@ -18,6 +18,9 @@
     <!-- to check for sim change -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
+    <!-- to be able to display webviews -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <!-- useless unless system app -->
     <uses-permission
         android:name="android.permission.MODIFY_PHONE_STATE"
