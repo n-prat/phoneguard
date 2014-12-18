@@ -17,12 +17,7 @@ import android.widget.ToggleButton;
 public class MainActivity extends ActionBarActivity {
     private final String tag = "PhoneGuard Main";
 
-    //TODO receive boot event
-    //TODO-> if security was on before : restart service
-    //TODO-> if security and new sim : send new number to old one
-    //TODO implement service?
-    //TODO (start when security is enabled, restart on boot if necessary)
-    //TODO (stop only when phone is found again(unlock, security off message?)
+    //TODO implement SimManager?
 
     //TODO on sim card change -> send new number to the old on
 
@@ -41,8 +36,6 @@ public class MainActivity extends ActionBarActivity {
 
     //TODO geofencing :-> restart tracking when moving
     //TODO idem with Activity detection
-
-    //TODO display notification while security is on?
 
     //TODO store auth numbers + security status etc in SharedPrefs
 

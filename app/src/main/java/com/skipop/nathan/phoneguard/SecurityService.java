@@ -18,6 +18,10 @@ public class SecurityService extends Service {
 
     private int NOTIFICATION = R.string.service_started;
 
+    //TODO implement service?
+    //TODO (start when security is enabled, restart on boot if necessary)
+    //TODO (stop only when phone is found again(unlock, security off message?)
+
     public SecurityService() {
     }
 

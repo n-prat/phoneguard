@@ -12,6 +12,10 @@ import android.widget.Toast;
  */
 public class BootListener extends BroadcastReceiver {
 
+    //TODO receive boot event
+    //TODO-> if security was on before : restart service
+    //TODO-> if security and new sim : send new number to old one
+
     @SuppressWarnings("EmptyMethod")
     public void getPreviousSimId(){
 
