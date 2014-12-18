@@ -15,6 +15,9 @@
     <string name="action_license">Licence</string>
     <string name="service_started">4444</string>
     <string name="foreground_service">PGforeground</string>
+    <string name="notification_string">Service</string>
+    <string name="notication_title">PhoneGuard</string>
+    <string name="notification_text">Security ON</string>
 
     <!--TODO remove all hardcoded strings-->
 

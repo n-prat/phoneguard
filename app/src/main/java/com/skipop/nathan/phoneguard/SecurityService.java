@@ -28,26 +28,25 @@ public class SecurityService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    //TODO add a Context?
-    //TODO foreground? notification?
     @Override
     public void onCreate() {
         Log.d(tag, "onCreate ");
-        //mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 
         Toast.makeText(this, "Phoneguard service starting", Toast.LENGTH_SHORT).show();
 
+        //TODO use a Foreground service?
         //startForeground(FOREGROUND_ID,buildForegroundNotification(filename));
 
         // Display a notification about us starting.  We put an icon in the status bar.
-        //showNotification();
+        mNM.notify(NOTIFICATION, buildNotification());
     }
 
     @Override
     public void onDestroy() {
         Log.d(tag, "onDestroy ");
         // Cancel the persistent notification.
-        //mNM.cancel(NOTIFICATION);
+        mNM.cancel(NOTIFICATION);
 
         //stopForeground(true);
 
@@ -55,17 +54,17 @@ public class SecurityService extends Service {
         Toast.makeText(this, "Phoneguard service stopped", Toast.LENGTH_SHORT).show();
     }
 
-    private void showNotification() {
-        // In this sample, we'll use the same text for the ticker and the expanded notification
-        CharSequence text = getText(R.string.service_started);
-        Log.d(tag, "showNotification "+text);
+    private Notification buildNotification() {
+        Log.d(tag, "showNotification ");
 
-        // Set the icon, scrolling text and timestamp
-        Notification notification = new Notification(R.drawable.stat_sample, text,
-                System.currentTimeMillis());
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.ic_icon)
+                        .setContentTitle(getString(R.string.notication_title))
+                        .setContentText(getString(R.string.notification_text));
 
-        // Send the notification.
-        mNM.notify(NOTIFICATION, notification);
+        //mNM.notify(mId, mBuilder.build());
+        return mBuilder.build();
     }
 
     private Notification buildForegroundNotification(String filename) {
@@ -73,9 +72,9 @@ public class SecurityService extends Service {
 
         b.setOngoing(true);
 
-        b.setContentTitle(getString(R.string.foreground_service))
-                .setContentText(filename)
-                .setSmallIcon(android.R.drawable.stat_sys_download)
+        b.setSmallIcon(R.drawable.ic_icon)
+                .setContentTitle(getString(R.string.notication_title))
+                .setContentText(getString(R.string.notification_text))
                 .setTicker(getString(R.string.foreground_service));
 
         return(b.build());
