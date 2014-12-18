@@ -13,6 +13,8 @@
     <string name="action_about">About</string>
     <string name="action_contact">Contact</string>
     <string name="action_license">Licence</string>
+    <string name="service_started">4444</string>
+    <string name="foreground_service">PGforeground</string>
 
     <!--TODO remove all hardcoded strings-->
 

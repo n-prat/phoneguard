@@ -74,6 +74,12 @@
             android:name=".HelpActivity"
             android:label="@string/title_activity_help" >
         </activity>
+
+        <service
+            android:name=".SecurityService"
+            android:enabled="true"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

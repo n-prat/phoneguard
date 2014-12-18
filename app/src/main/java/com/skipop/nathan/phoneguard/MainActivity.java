@@ -46,6 +46,8 @@ public class MainActivity extends ActionBarActivity {
 
     //TODO store auth numbers + security status etc in SharedPrefs
 
+    //TODO ability to change keyword (ie phoneguard)
+
     @Override
     public void onDestroy() {
         super.onDestroy();

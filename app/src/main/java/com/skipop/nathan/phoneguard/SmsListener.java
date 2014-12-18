@@ -71,11 +71,12 @@ public class SmsListener extends BroadcastReceiver {
     }
 
 
+    //TODO use another method?
     void processSms(SmsMessage message) {
         String msgAddress = message.getDisplayOriginatingAddress();
         String msgBody = message.getDisplayMessageBody();
 
-        if (msgBody.startsWith("phoneguard")) {
+        if (msgBody.startsWith("phoneguard") || msgBody.startsWith("Phoneguard")) {
             //we have an useful message
             Log.d(tag, "command received");
 
@@ -106,19 +107,23 @@ public class SmsListener extends BroadcastReceiver {
 
                             Toast.makeText(mContext, "Password Accepted ", Toast.LENGTH_SHORT).show();
 
-                            //TODO activate security mode
                             if(!securityManager.isSecurityActivated()){
                                 Log.d(tag, "turning security on");
                                 securityManager.securityOn();
                                 smsSender.sendSecurityChanged(msgAddress);
+
+                                //TODO service on?
+                                Log.d(tag, "starting service");
+                                //SecurityService securityService = new SecurityService(mContext);
+                                Intent i= new Intent(mContext, SecurityService.class);
+                                mContext.startService(i);
+                                //securityService.startService(i);
+
+                                //TODO send back confirmation text with command list
                             }
                             else{
                                 Log.d(tag, "security was already on");
                             }
-
-                            //TODO service on?
-
-                            //TODO send back confirmation text with command list
                         }
                         else{
                             //wrong password
@@ -140,6 +145,10 @@ public class SmsListener extends BroadcastReceiver {
                                 Log.d(tag, "turning security off");
                                 securityManager.securityOff();
                                 smsSender.sendSecurityChanged(msgAddress);
+
+                                //TODO service off
+                                Intent i= new Intent(mContext, SecurityService.class);
+                                mContext.stopService(i);
                             }
                             else{
                                 Log.d(tag, "security was already off");
