@@ -8,8 +8,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.InputStreamReader;
 
@@ -19,6 +17,7 @@ import java.io.InputStreamReader;
 public class RootHandler {
     Context mContext = null;
     final String tag = "PhoneGuard ROOTHANDLER";
+    String mOldApk,mNewApk;
 
     public RootHandler(Context Context) {
         this.mContext = Context;
@@ -35,12 +34,14 @@ public class RootHandler {
         try {
             ApplicationInfo ai = pm.getApplicationInfo(packageName, 0);
             sourceApk = ai.publicSourceDir;
+
             Log.d(tag, "sourceApk: "+sourceApk);
         } catch (PackageManager.NameNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
+        mOldApk = sourceApk;
         return sourceApk;
     }
 
@@ -49,38 +50,150 @@ public class RootHandler {
 
         if(!isInstalledSystem()){
             Log.d(tag, "installing to /system ");
-            String apkname = getApkName();
+            String block = getMemblockSystem();
 
-            remountSystem();
+            remountSystem(block);
+            cleanSystem();
             copyToSystem();
-            //eraseOldApk(apkname);
+            changePermissions();
+            eraseOldApk();
         }
         else{
             Log.d(tag, "already a system app ");
         }
     }
 
+    private void cleanSystem(){
+        try {
+            Log.d(tag, "cleanSystem ");
+
+            Runtime rt = Runtime.getRuntime();
+            Process proc;
+
+            String command = "su -c rm /system/priv-app/com.skipop.* ";
+            Log.d(tag, "command: " + command);
+            proc = rt.exec(command);
+
+            BufferedReader stdInput = new BufferedReader(new
+                    InputStreamReader(proc.getInputStream()));
+
+            BufferedReader stdError = new BufferedReader(new
+                    InputStreamReader(proc.getErrorStream()));
+
+            // read the output from the command
+            String s = null;
+            while ((s = stdInput.readLine()) != null) {
+                Log.d(tag, "output: " + s);
+            }
+
+            // read any errors from the attempted command
+            while ((s = stdError.readLine()) != null) {
+                Log.d(tag, "error output: " + s);
+            }
+        } catch (Exception e) {
+            Log.d(tag, "Error [" + e.getClass().getName() + "] : " + e.getMessage());
+        }
+    }
+
+    private void changePermissions(){
+        try {
+            Log.d(tag, "remountSystem ");
+
+            Runtime rt = Runtime.getRuntime();
+            Process proc;
+
+            //update newApk path
+            String[] path = mOldApk.split("/");
+            mNewApk = mNewApk+path[3];
+            Log.d(tag, "newapk: " + mNewApk);
+
+            String command = "su -c chmod 644 "+mNewApk;
+            Log.d(tag, "command: " + command);
+            proc = rt.exec(command);
+
+            BufferedReader stdInput = new BufferedReader(new
+                    InputStreamReader(proc.getInputStream()));
+
+            BufferedReader stdError = new BufferedReader(new
+                    InputStreamReader(proc.getErrorStream()));
+
+            // read the output from the command
+            String s = null;
+            while ((s = stdInput.readLine()) != null) {
+                Log.d(tag, "output: " + s);
+            }
+
+            // read any errors from the attempted command
+            while ((s = stdError.readLine()) != null) {
+                Log.d(tag, "error output: " + s);
+            }
+        } catch (Exception e) {
+            Log.d(tag, "Error [" + e.getClass().getName() + "] : " + e.getMessage());
+        }
+    }
+
+    private String getMemblockSystem(){
+        try {
+            Log.d(tag, "getMemblockSystem ");
+
+            Runtime rt = Runtime.getRuntime();
+            Process proc;
+            String command="su -c mount";
+            String fullline="",block="";
+
+            Log.d(tag, "command: " + command);
+            proc = rt.exec(command);
+
+            BufferedReader stdInput = new BufferedReader(new
+                    InputStreamReader(proc.getInputStream()));
+
+            BufferedReader stdError = new BufferedReader(new
+                    InputStreamReader(proc.getErrorStream()));
+
+            // read the output from the command
+            String s = null;
+            while ((s = stdInput.readLine()) != null) {
+                if(s.contains("/system")){
+                    fullline = s;
+
+                    String[] tmp = fullline.split(" ",2);
+                    block = tmp[0];
+                    break;
+                }
+            }
+
+            // read any errors from the attempted command
+            while ((s = stdError.readLine()) != null) {
+                Log.d(tag, "error output: " + s);
+            }
+
+            Log.d(tag, "block: " + block);
+            return block;
+        } catch (Exception e) {
+            Log.d(tag, "Error [" + e.getClass().getName() + "] : " + e.getMessage());
+        }
+        return null;
+    }
+
     private boolean isInstalledSystem(){
         Log.d(tag, "isInstalledSystem ");
 
-        String apkname = getApkName();
-        boolean isInstalledSystem = apkname.contains("system");
+        getApkName();
+        boolean isInstalledSystem = mOldApk.contains("system");
 
         Log.d(tag, "isInstalledSystem? "+isInstalledSystem);
 
         return isInstalledSystem;
     }
 
-    private void remountSystem(){
+    private void remountSystem(String block){
         try {
             Log.d(tag, "remountSystem ");
 
             Runtime rt = Runtime.getRuntime();
             Process proc;
             String command;
-            String remount = "su -c mount -o rw,remount /dev/block/mtdblock0 /system";
-            ///dev/block/mmcblk0p13
-            //su -c mount -o rw,remount /dev/block/mmcblk0p13 /system
+            String remount = "su -c mount -o rw,remount "+block+" /system";
 
             Log.d(tag, "command: " + remount);
             proc = rt.exec(remount);
@@ -106,13 +219,13 @@ public class RootHandler {
         }
     }
 
-    private void eraseOldApk(String apkname){
+    public void eraseOldApk(){
         try {
             Log.d(tag, "eraseOldApk ");
 
             Runtime rt = Runtime.getRuntime();
             Process proc;
-            String command = "su -c rm "+apkname;
+            String command = "su -c rm "+ mOldApk;
 
             Log.d(tag, "command: " + command);
             proc = rt.exec(command);
@@ -144,21 +257,19 @@ public class RootHandler {
         try {
             Log.d(tag, "copyToSystem ");
 
-            String apkname = getApkName();
             Runtime rt = Runtime.getRuntime();
             Process proc;
             String command;
 
-            Log.d(tag, "Remounting /system ");
-            remountSystem();
-
             if (Build.VERSION.SDK_INT > 18) {
                 //Android 4.3+ -> /system/priv-app
-                command = "su -c cp "+apkname+" /system/priv-app";
+                command = "su -c cp "+mOldApk+" /system/priv-app";
+                mNewApk = "/system/priv-app/";
             }
             else{
                 // -> /system/app
-                command = "su -c cp "+apkname+" /system/app";
+                command = "su -c cp "+mOldApk+" /system/app";
+                mNewApk = "/system/app/";
             }
             Log.d(tag, "command: " + command);
             proc = rt.exec(command);

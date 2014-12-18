@@ -15,8 +15,9 @@ import android.widget.ToggleButton;
  */
 public class MainActivity extends ActionBarActivity {
     final String tag = "PhoneGuard Main";
-    SecurityManager securityManager = new SecurityManager(MainActivity.this);
-    ConnectionManager connectionManager = new ConnectionManager(MainActivity.this);
+    SecurityManager securityManager = null;
+    ConnectionManager connectionManager = null;
+    RootHandler rootHandler = null;
 
     //TODO receive boot event
     //TODO-> if security was on before : restart service
@@ -46,11 +47,30 @@ public class MainActivity extends ActionBarActivity {
 
     //TODO option to install as system/app
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(tag, "onDestroy ");
+        //rootHandler.eraseOldApk();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(tag, "onStop ");
+        //rootHandler.eraseOldApk();
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(tag, "onCreate: ");
+
+        //initialization
+        securityManager = new SecurityManager(MainActivity.this);
+        connectionManager = new ConnectionManager(MainActivity.this);
+        rootHandler = new RootHandler(MainActivity.this);
 
         // Properly set default values upon first launch
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
@@ -69,7 +89,7 @@ public class MainActivity extends ActionBarActivity {
         ToggleButton toggleWifi = (ToggleButton) findViewById(R.id.togglebuttonwifi);
         toggleWifi.setChecked(connectionManager.checkWifiState());
 
-        //new RootHandler(MainActivity.this).installToSystem();
+        //rootHandler.installToSystem();
     }
 
     @Override
