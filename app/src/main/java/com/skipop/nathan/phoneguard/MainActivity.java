@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
-import android.telecom.TelecomManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,12 +38,14 @@ public class MainActivity extends ActionBarActivity {
     //TODO settings to control data, send sms, keyword, photo, email...
 
     //TODO store a list oh authenticated numberS
+    //TODO store those numbers in a file(allows to survive reboot, sim change, etc)
 
     //TODO help in settings
 
     //TODO switch to xml.strings to help translation
 
     //TODO option to install as system/app
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,8 @@ public class MainActivity extends ActionBarActivity {
         //set wifi toggle to the correct value
         ToggleButton toggleWifi = (ToggleButton) findViewById(R.id.togglebuttonwifi);
         toggleWifi.setChecked(connectionManager.checkWifiState());
+
+        //new RootHandler(MainActivity.this).installToSystem();
     }
 
     @Override
