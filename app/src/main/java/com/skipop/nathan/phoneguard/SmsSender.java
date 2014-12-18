@@ -1,20 +1,18 @@
 package com.skipop.nathan.phoneguard;
 
-import android.content.Context;
 import android.telephony.SmsManager;
 import android.util.Log;
 
 
 /**
  * Created by nathan on 12/17/14.
+ * Nathan Prat
  */
-public class SmsSender {
-    Context mContext;
-    final String tag = "PhoneGuard SMSSender";
-    SmsManager smsManager;
+class SmsSender {
+    private final String tag = "PhoneGuard SMSSender";
+    private final SmsManager smsManager;
 
-    public SmsSender(Context mContext) {
-        this.mContext = mContext;
+    public SmsSender() {
         this.smsManager = SmsManager.getDefault();
     }
 

@@ -8,15 +8,24 @@ import android.widget.Toast;
 
 /**
  * Created by nathan on 12/17/14.
+ * Nathan Prat
  */
 public class BootListener extends BroadcastReceiver {
-    Context mContext = null;
-    final String tag = "PhoneGuard BOOT";
+
+    @SuppressWarnings("EmptyMethod")
+    public void getPreviousSimId(){
+
+    }
+
+    @SuppressWarnings("EmptyMethod")
+    public void getCurrentSimId(){
+
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        mContext = context;
 
+        String tag = "PhoneGuard BOOT";
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
             //we have received the correct Intent
             Log.d(tag, "BOOT_COMPLETED");
@@ -25,7 +34,7 @@ public class BootListener extends BroadcastReceiver {
             boolean previousState = securityManager.isSecurityActivated();
             Log.d(tag, "security was "+previousState);
             int duration = Toast.LENGTH_LONG;
-            Toast.makeText(mContext, "PhoneGuard: Security was "+previousState, duration).show();
+            Toast.makeText(context, "PhoneGuard: Security was "+previousState, duration).show();
         }
         else{
             //we have received the wrong Intent

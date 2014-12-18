@@ -13,18 +13,21 @@ import java.io.InputStreamReader;
 
 /**
  * Created by nathan on 12/16/14.
+ * Nathan Prat
  */
-public class RootHandler {
-    Context mContext = null;
-    final String tag = "PhoneGuard ROOTHANDLER";
-    String mOldApk,mNewApk;
+class RootHandler {
+    private Context mContext = null;
+    private final String tag = "PhoneGuard ROOTHANDLER";
+    private String mOldApk;
+    private String mNewApk;
 
     public RootHandler(Context Context) {
         this.mContext = Context;
     }
 
 
-    private String getApkName(){
+    //update mOldApk name to get the full path(ie the one in data/app)
+    private void getApkName(){
         Log.d(tag, "getApkName ");
 
         String sourceApk = "";
@@ -42,7 +45,7 @@ public class RootHandler {
         }
 
         mOldApk = sourceApk;
-        return sourceApk;
+        //return sourceApk;
     }
 
     public void installToSystem(){
@@ -81,7 +84,7 @@ public class RootHandler {
                     InputStreamReader(proc.getErrorStream()));
 
             // read the output from the command
-            String s = null;
+            String s;
             while ((s = stdInput.readLine()) != null) {
                 Log.d(tag, "output: " + s);
             }
@@ -118,7 +121,7 @@ public class RootHandler {
                     InputStreamReader(proc.getErrorStream()));
 
             // read the output from the command
-            String s = null;
+            String s;
             while ((s = stdInput.readLine()) != null) {
                 Log.d(tag, "output: " + s);
             }
@@ -139,7 +142,7 @@ public class RootHandler {
             Runtime rt = Runtime.getRuntime();
             Process proc;
             String command="su -c mount";
-            String fullline="",block="";
+            String fullline,block="";
 
             Log.d(tag, "command: " + command);
             proc = rt.exec(command);
@@ -151,7 +154,7 @@ public class RootHandler {
                     InputStreamReader(proc.getErrorStream()));
 
             // read the output from the command
-            String s = null;
+            String s;
             while ((s = stdInput.readLine()) != null) {
                 if(s.contains("/system")){
                     fullline = s;
@@ -192,7 +195,6 @@ public class RootHandler {
 
             Runtime rt = Runtime.getRuntime();
             Process proc;
-            String command;
             String remount = "su -c mount -o rw,remount "+block+" /system";
 
             Log.d(tag, "command: " + remount);
@@ -205,7 +207,7 @@ public class RootHandler {
                     InputStreamReader(proc.getErrorStream()));
 
             // read the output from the command
-            String s = null;
+            String s;
             while ((s = stdInput.readLine()) != null) {
                 Log.d(tag, "output: " + s);
             }
@@ -219,7 +221,7 @@ public class RootHandler {
         }
     }
 
-    public void eraseOldApk(){
+    void eraseOldApk(){
         try {
             Log.d(tag, "eraseOldApk ");
 
@@ -237,7 +239,7 @@ public class RootHandler {
                     InputStreamReader(proc.getErrorStream()));
 
             // read the output from the command
-            String s = null;
+            String s;
             while ((s = stdInput.readLine()) != null) {
                 Log.d(tag, "output: " + s);
             }
@@ -281,7 +283,7 @@ public class RootHandler {
                     InputStreamReader(proc.getErrorStream()));
 
             // read the output from the command
-            String s = null;
+            String s;
             while ((s = stdInput.readLine()) != null) {
                 Log.d(tag, "output: " + s);
 
@@ -298,7 +300,7 @@ public class RootHandler {
     }
 
     public boolean checkRoot() {
-        boolean isRooted = false, result1 = false, result2 = false;
+        boolean isRooted, result2;
         boolean isApkInstalled = new File("/system/app/Superuser.apk").exists();
 
         Log.d(tag, "Superuser.apk exists? " + isApkInstalled);
@@ -306,7 +308,7 @@ public class RootHandler {
         //result1 = checkMethod1();
         result2 = checkMethod2();
 
-        isRooted = result1 || result2;
+        isRooted = isApkInstalled && result2;
 
         if (isRooted)
             Toast.makeText(mContext, "Root Access granted", Toast.LENGTH_SHORT).show();
@@ -319,46 +321,48 @@ public class RootHandler {
     }//checkRoot
 
 
-    private boolean checkMethod1() {
-        // DOES NOT WORK
-        boolean isRooted = false;
-        try {
-            Log.d(tag, "checkMethod1 ");
-            //http://stackoverflow.com/questions/5711084/java-runtime-getruntime-getting-output-from-executing-a-command-line-program
-            Runtime rt = Runtime.getRuntime();
-            String[] commands = {"su", "-V"};
-            Process proc = rt.exec(commands);
-
-            BufferedReader stdInput = new BufferedReader(new
-                    InputStreamReader(proc.getInputStream()));
-
-            BufferedReader stdError = new BufferedReader(new
-                    InputStreamReader(proc.getErrorStream()));
-
-            // read the output from the command
-            String s = null;
-            while ((s = stdInput.readLine()) != null) {
-                Log.d(tag, "check output: " + s);
-                try {
-                    int version = Integer.parseInt(s);
-                    if (version >= 235)
-                        isRooted = true;
-                } catch (NumberFormatException e) {
-                    //
-                }
-            }
-
-            // read any errors from the attempted command
-            while ((s = stdError.readLine()) != null) {
-                Log.d(tag, "error output: " + s);
-            }
-        } catch (Exception e) {
-            Log.d(tag, "Root access rejected [" + e.getClass().getName() + "] : " + e.getMessage());
-        }
-
-        Log.d(tag, "Method1 result: " + isRooted);
-        return isRooted;
-    }//checkMethod1
+// --Commented out by Inspection START (12/18/14 8:18 PM):
+//    private boolean checkMethod1() {
+//        // DOES NOT WORK
+//        boolean isRooted = false;
+//        try {
+//            Log.d(tag, "checkMethod1 ");
+//            //http://stackoverflow.com/questions/5711084/java-runtime-getruntime-getting-output-from-executing-a-command-line-program
+//            Runtime rt = Runtime.getRuntime();
+//            String[] commands = {"su", "-V"};
+//            Process proc = rt.exec(commands);
+//
+//            BufferedReader stdInput = new BufferedReader(new
+//                    InputStreamReader(proc.getInputStream()));
+//
+//            BufferedReader stdError = new BufferedReader(new
+//                    InputStreamReader(proc.getErrorStream()));
+//
+//            // read the output from the command
+//            String s = null;
+//            while ((s = stdInput.readLine()) != null) {
+//                Log.d(tag, "check output: " + s);
+//                try {
+//                    int version = Integer.parseInt(s);
+//                    if (version >= 235)
+//                        isRooted = true;
+//                } catch (NumberFormatException e) {
+//                    //
+//                }
+//            }
+//
+//            // read any errors from the attempted command
+//            while ((s = stdError.readLine()) != null) {
+//                Log.d(tag, "error output: " + s);
+//            }
+//        } catch (Exception e) {
+//            Log.d(tag, "Root access rejected [" + e.getClass().getName() + "] : " + e.getMessage());
+//        }
+//
+//        Log.d(tag, "Method1 result: " + isRooted);
+//        return isRooted;
+//    }//checkMethod1
+// --Commented out by Inspection STOP (12/18/14 8:18 PM)
 
     private boolean checkMethod2() {
         // send command "su -c whoami"
@@ -384,7 +388,7 @@ public class RootHandler {
                     InputStreamReader(proc.getErrorStream()));
 
             // read the output from the command
-            String s = null;
+            String s;
             while ((s = stdInput.readLine()) != null) {
                 Log.d(tag, "check output 2: " + s);
                 isRooted = isRooted || s.contains("uid");

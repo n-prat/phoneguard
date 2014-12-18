@@ -12,12 +12,10 @@ import android.widget.ToggleButton;
 
 /**
  * Created by nathan on 12/15/14.
+ * Nathan Prat
  */
 public class MainActivity extends ActionBarActivity {
-    final String tag = "PhoneGuard Main";
-    SecurityManager securityManager = null;
-    ConnectionManager connectionManager = null;
-    RootHandler rootHandler = null;
+    private final String tag = "PhoneGuard Main";
 
     //TODO receive boot event
     //TODO-> if security was on before : restart service
@@ -47,6 +45,13 @@ public class MainActivity extends ActionBarActivity {
 
     //TODO option to install as system/app
 
+    //TODO geofencing :-> restart tracking when moving
+    //TODO idem with Activity detection
+
+    //TODO display notification while security is on?
+
+    //TODO store auth numbers + security status etc in SharedPrefs
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -68,9 +73,9 @@ public class MainActivity extends ActionBarActivity {
         Log.d(tag, "onCreate: ");
 
         //initialization
-        securityManager = new SecurityManager(MainActivity.this);
-        connectionManager = new ConnectionManager(MainActivity.this);
-        rootHandler = new RootHandler(MainActivity.this);
+        SecurityManager securityManager = new SecurityManager(MainActivity.this);
+        ConnectionManager connectionManager = new ConnectionManager(MainActivity.this);
+
 
         // Properly set default values upon first launch
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
@@ -89,6 +94,7 @@ public class MainActivity extends ActionBarActivity {
         ToggleButton toggleWifi = (ToggleButton) findViewById(R.id.togglebuttonwifi);
         toggleWifi.setChecked(connectionManager.checkWifiState());
 
+        //RootHandler rootHandler = new RootHandler(MainActivity.this);
         //rootHandler.installToSystem();
     }
 
@@ -113,7 +119,8 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    public void onToggleWifiClicked(View view) {
+
+    public void onToggleWifiClicked(View v) {
         Log.d(tag, "onToggleWifiClicked ");
         ToggleButton toggle = (ToggleButton) findViewById(R.id.togglebuttonwifi);
 
@@ -125,7 +132,7 @@ public class MainActivity extends ActionBarActivity {
         connectionManager.setWifiState(on);
     }
 
-    public void onToggleDataClicked(View view) {
+    public void onToggleDataClicked(View v) {
         Log.d(tag, "onToggleDataClicked ");
         ToggleButton toggle = (ToggleButton) findViewById(R.id.togglebuttondata);
 
@@ -136,10 +143,6 @@ public class MainActivity extends ActionBarActivity {
             connectionManager.manageData(true);
         else
             connectionManager.manageData(false);
-    }
-
-    public SecurityManager getSecurityManager() {
-        return securityManager;
     }
 
 }

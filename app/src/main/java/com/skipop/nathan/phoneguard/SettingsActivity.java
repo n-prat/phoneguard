@@ -2,9 +2,7 @@ package com.skipop.nathan.phoneguard;
 
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.Preference;
 
 public class SettingsActivity extends Activity {
 

@@ -3,7 +3,6 @@ package com.skipop.nathan.phoneguard;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
-import android.os.Handler;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -14,10 +13,11 @@ import java.lang.reflect.Method;
 
 /**
  * Created by nathan on 12/16/14.
+ * Nathan Prat
  */
-public class ConnectionManager {
-    Context mContext;
-    final String tag = "PhoneGuard ConnectionManager";
+class ConnectionManager {
+    private final Context mContext;
+    private final String tag = "PhoneGuard ConnectionManager";
 
     /*public ConnectionManager() {
         this.mContext = null;
@@ -33,7 +33,7 @@ public class ConnectionManager {
         return wifiManager.isWifiEnabled();
     }
 
-    public boolean setWifiState(boolean state) {
+    public void setWifiState(boolean state) {
         Log.d(tag, "setWifiState");
         WifiManager wifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
         wifiManager.setWifiEnabled(state);
@@ -45,7 +45,7 @@ public class ConnectionManager {
         else
             Toast.makeText(mContext, "Wifi(??)", Toast.LENGTH_SHORT).show();
 
-        return (wifiManager.isWifiEnabled() == state);
+        //return (wifiManager.isWifiEnabled() == state);
     }
 
 
@@ -60,34 +60,35 @@ public class ConnectionManager {
         Log.d(tag, "getDataState: ");
 
         TelephonyManager TelephonyManager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
-        int state = TelephonyManager.getDataState();
-
-        return state;
+        return TelephonyManager.getDataState();
     }
 
-    private void setMobileDataEnabled1(boolean enabled) {
-        Log.d(tag, "setMobileDataEnabled1: " + enabled);
-        //Hack for KitKat:http://stackoverflow.com/questions/21511216/toggle-mobile-data-programmatically-on-android-4-4-2
-        ConnectivityManager dataManager;
-        dataManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        Method dataMtd = null;
-        try {
-            dataMtd = ConnectivityManager.class.getDeclaredMethod("setMobileDataEnabled", boolean.class);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-        dataMtd.setAccessible(true);
-        try {
-            dataMtd.invoke(dataManager, enabled);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-    }
+// --Commented out by Inspection START (12/18/14 8:15 PM):
+//    private void setMobileDataEnabled1(boolean enabled) {
+//        Log.d(tag, "setMobileDataEnabled1: " + enabled);
+//        //Hack for KitKat:http://stackoverflow.com/questions/21511216/toggle-mobile-data-programmatically-on-android-4-4-2
+//        ConnectivityManager dataManager;
+//        dataManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+//        Method dataMtd = null;
+//        try {
+//            dataMtd = ConnectivityManager.class.getDeclaredMethod("setMobileDataEnabled", boolean.class);
+//        } catch (NoSuchMethodException e) {
+//            e.printStackTrace();
+//        }
+//        dataMtd.setAccessible(true);
+//        try {
+//            dataMtd.invoke(dataManager, enabled);
+//        } catch (IllegalArgumentException e) {
+//            e.printStackTrace();
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        } catch (InvocationTargetException e) {
+//            e.printStackTrace();
+//        }
+//    }
+// --Commented out by Inspection STOP (12/18/14 8:15 PM)
 
+    //TODO On Lollipop -> Force Close
     private void setMobileDataEnabled2(Context context, boolean enabled) {
         Log.d(tag, "setMobileDataEnabled2: " + enabled);
         //http://stackoverflow.com/questions/12535101/how-can-i-turn-off-3g-data-programmatically-on-android
@@ -102,10 +103,12 @@ public class ConnectionManager {
 
         Field iConnectivityManagerField = null;
         try {
+            assert conmanClass != null;
             iConnectivityManagerField = conmanClass.getDeclaredField("mService");
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
+        assert iConnectivityManagerField != null;
         iConnectivityManagerField.setAccessible(true);
         Object iConnectivityManager = null;
         try {
@@ -115,23 +118,25 @@ public class ConnectionManager {
         }
         Class iConnectivityManagerClass = null;
         try {
+            assert iConnectivityManager != null;
             iConnectivityManagerClass = Class.forName(iConnectivityManager.getClass().getName());
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         Method setMobileDataEnabledMethod = null;
         try {
+            assert iConnectivityManagerClass != null;
+            //noinspection unchecked
             setMobileDataEnabledMethod = iConnectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
-        } catch (NoSuchMethodException e) {
+        } catch (NoSuchMethodException | NullPointerException e) {
             e.printStackTrace();
         }
+        assert setMobileDataEnabledMethod != null;
         setMobileDataEnabledMethod.setAccessible(true);
 
         try {
             setMobileDataEnabledMethod.invoke(iConnectivityManager, enabled);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
     }

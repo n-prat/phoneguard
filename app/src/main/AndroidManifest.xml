@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.skipop.nathan.phoneguard" >
 
     <!--to handle SMS-->
@@ -18,7 +19,8 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <!--useless unless system app-->
-    <uses-permission android:name="android.permission.MODIFY_PHONE_STATE" />
+    <uses-permission android:name="android.permission.MODIFY_PHONE_STATE"
+        tools:ignore="ProtectedPermissions" />
 
     <!--used to receive BOOT_COMPLETED-->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />

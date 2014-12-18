@@ -8,25 +8,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Telephony;
-import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
 /**
  * Created by nathan on 12/15/14.
+ * Nathan Prat
  */
 public class SmsListener extends BroadcastReceiver {
-    Context mContext = null;
-    final String tag = "PhoneGuard SMS";
-
-    public SmsListener(Context mContext) {
-        this.mContext = mContext;
-    }
-
-    public SmsListener() {
-        this.mContext = null;
-    }
+    private Context mContext = null;
+    private final String tag = "PhoneGuard SMS";
 
 
     @Override
@@ -40,10 +32,7 @@ public class SmsListener extends BroadcastReceiver {
             Log.w(tag, "BroadcastReceiver failed, no intent data to process.");
             return;
         }
-
         //Broadcast valid, we can move on
-        String smsOriginatingAddress, smsDisplayMessage;
-
 
         if (intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")) {
             //we have received the correct Intent
@@ -61,11 +50,7 @@ public class SmsListener extends BroadcastReceiver {
                         break;
                     }
 
-                    smsOriginatingAddress = message.getDisplayOriginatingAddress();
-                    smsDisplayMessage = message.getDisplayMessageBody(); // see getMessageBody();
                     processSms(message);
-                    //processReceivedSms(smsOriginatingAddress, smsDisplayMessage);
-
                 }
             } else {
                 //The KitKat way  : API level 19
@@ -75,8 +60,6 @@ public class SmsListener extends BroadcastReceiver {
                         Log.e(tag, "SMS message is null -- ABORT");
                         break;
                     }
-                    smsOriginatingAddress = message.getDisplayOriginatingAddress();
-                    smsDisplayMessage = message.getDisplayMessageBody(); //see getMessageBody();
                     processSms(message);
                 }
             }
@@ -88,7 +71,7 @@ public class SmsListener extends BroadcastReceiver {
     }
 
 
-    public void processSms(SmsMessage message) {
+    void processSms(SmsMessage message) {
         String msgAddress = message.getDisplayOriginatingAddress();
         String msgBody = message.getDisplayMessageBody();
 
@@ -97,7 +80,7 @@ public class SmsListener extends BroadcastReceiver {
             Log.d(tag, "command received");
 
             SecurityManager securityManager = new SecurityManager(mContext);
-            SmsSender smsSender = new SmsSender(mContext);
+            SmsSender smsSender = new SmsSender();
 
             String[] msgContent = msgBody.split(" ");
             int duration = Toast.LENGTH_SHORT;
@@ -171,7 +154,8 @@ public class SmsListener extends BroadcastReceiver {
                     }
                 }
                 else if (msgContent[1].compareToIgnoreCase("othercommand") == 0) {
-
+                    //do other stuff
+                    Log.d(tag, "othercommand");
                 }
                 else {
                     toast = Toast.makeText(mContext, "PhoneGuard: Invalid Command", duration);

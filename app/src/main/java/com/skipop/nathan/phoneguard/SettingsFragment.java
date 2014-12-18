@@ -4,19 +4,14 @@ package com.skipop.nathan.phoneguard;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.CheckBox;
-import android.widget.Toast;
 
 public class SettingsFragment extends PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    final String tag = "PhoneGuard settings";
-    public static final String KEY_ROOT = "setting_root";
+    private static final String KEY_ROOT = "setting_root";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +35,7 @@ public class SettingsFragment extends PreferenceFragment
 
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
                                           String key) {
+        String tag = "PhoneGuard settings";
         Log.i(tag, "preference changed: " + key);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity());

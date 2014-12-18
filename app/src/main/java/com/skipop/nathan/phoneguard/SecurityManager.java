@@ -8,12 +8,13 @@ import java.io.FileOutputStream;
 
 /**
  * Created by nathan on 12/17/14.
+ * Nathan Prat
  */
-public class SecurityManager {
-    String filename = "securitystate";
-    File file;
-    Context mContext;
-    final String tag = "PhoneGuard SecurityManager";
+class SecurityManager {
+    private final String filename = "securitystate";
+    private File file;
+    private final Context mContext;
+    private final String tag = "PhoneGuard SecurityManager";
 
     public SecurityManager(Context context) {
         mContext = context;
@@ -53,7 +54,10 @@ public class SecurityManager {
         Log.d(tag, "turning security Off");
 
         if(isSecurityActivated()){
-            file.delete();
+            if(file.delete())
+                Log.d(tag, "file deleted");
+            else
+                Log.d(tag, "error during file delete");
         }
     }
 }
