@@ -1,18 +1,23 @@
 package com.skipop.nathan.phoneguard;
 
+import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import android.util.Log;
 
-//TODO remove compat -> extends Activity
-public class SettingsActivity extends PreferenceActivity {
+//TODO compat?
+//public class SettingsActivity extends PreferenceActivity {
+public class SettingsActivity extends Activity {
     private final String tag = "PhoneGuard SettingsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getFragmentManager().beginTransaction()
+                .replace(android.R.id.content, new SettingsFragment())
+                .commit();
+        /*
         if (Build.VERSION.SDK_INT > 10) {
             //Honeycomb+
             Log.d(tag, "Honeycomb+ mode");
@@ -26,6 +31,7 @@ public class SettingsActivity extends PreferenceActivity {
             //TODO not working
             addPreferencesFromResource(R.xml.preferences);
         }
+        */
     }
 } //end of class
 

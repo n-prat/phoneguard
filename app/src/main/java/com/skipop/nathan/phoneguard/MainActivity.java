@@ -65,7 +65,6 @@ public class MainActivity extends ActionBarActivity {
         SecurityManager securityManager = new SecurityManager(MainActivity.this);
         ConnectionManager connectionManager = new ConnectionManager(MainActivity.this);
 
-
         // Properly set default values upon first launch
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
@@ -83,8 +82,6 @@ public class MainActivity extends ActionBarActivity {
         ToggleButton toggleWifi = (ToggleButton) findViewById(R.id.togglebuttonwifi);
         toggleWifi.setChecked(connectionManager.checkWifiState());
 
-        //RootHandler rootHandler = new RootHandler(MainActivity.this);
-        //rootHandler.installToSystem();
     }
 
     @Override

@@ -18,6 +18,7 @@
     <string name="notification_string">Service</string>
     <string name="notication_title">PhoneGuard</string>
     <string name="notification_text">Security ON</string>
+    <string name="help_root_text">Root Access allows you to have greater control on what you can do</string>
 
     <!--TODO remove all hardcoded strings-->
 

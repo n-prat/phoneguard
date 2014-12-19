@@ -15,6 +15,7 @@ public class SecurityService extends Service {
     private final String tag = "PhoneGuard Service";
     private NotificationManager mNM;
     //private Context mContext;
+    Media player;
 
     private int NOTIFICATION = R.string.service_started;
 
@@ -44,6 +45,10 @@ public class SecurityService extends Service {
 
         // Display a notification about us starting.  We put an icon in the status bar.
         mNM.notify(NOTIFICATION, buildNotification());
+
+        //TODO play only on demand
+        player = new Media();
+        player.playAlarm(SecurityService.this);
     }
 
     @Override
@@ -53,6 +58,8 @@ public class SecurityService extends Service {
         mNM.cancel(NOTIFICATION);
 
         //stopForeground(true);
+
+        player.stopAlarm(SecurityService.this);
 
         // Tell the user we stopped.
         Toast.makeText(this, "Phoneguard service stopped", Toast.LENGTH_SHORT).show();
