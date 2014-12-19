@@ -9,7 +9,9 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 /**
  * Created by nathan on 12/16/14.
@@ -47,6 +49,46 @@ class RootHandler {
         mOldApk = sourceApk;
         //return sourceApk;
     }
+
+    //http://stackoverflow.com/questions/13534419/check-to-see-whether-root-was-granted
+    public boolean execCmdSu(String command, ArrayList<String> results){
+
+        try {
+            Log.d(tag, "execCmdSu ");
+
+            Runtime rt = Runtime.getRuntime();
+            Process proc;
+
+            command = "su -c "+command;
+            Log.d(tag, "execCmdSu command: " + command);
+            proc = rt.exec(command);
+
+            BufferedReader stdInput = new BufferedReader(new
+                    InputStreamReader(proc.getInputStream()));
+
+            BufferedReader stdError = new BufferedReader(new
+                    InputStreamReader(proc.getErrorStream()));
+
+            // read the output from the command
+            String s;
+            while ((s = stdInput.readLine()) != null) {
+                Log.d(tag, "execCmdSu output: " + s);
+                results.add(s);
+            }
+
+            // read any errors from the attempted command
+            while ((s = stdError.readLine()) != null) {
+                Log.d(tag, "execCmdSu error output: " + s);
+                results.add(s);
+            }
+
+            return true;
+        } catch (Exception e) {
+            Log.d(tag, "Error [" + e.getClass().getName() + "] : " + e.getMessage());
+            return false;
+        }
+    }
+
 
     //TODO use an external apk to move it
     public void installToSystem(){
@@ -320,6 +362,31 @@ class RootHandler {
         Log.d(tag, "Result: " + isRooted);
         return isRooted;
     }//checkRoot
+
+    public boolean checkRootv2() {
+        //whoami -> no, random -> no
+        boolean isRooted, result2 = false;
+        boolean isApkInstalled = new File("/system/app/Superuser.apk").exists();
+
+        Log.d(tag, "checkRootv2 Superuser.apk exists? " + isApkInstalled);
+
+        ArrayList<String> output = new ArrayList<String>();
+        output = new ArrayList<String>();
+        if(execCmdSu("ls", output)){
+            result2 = result2 || output.contains("system");
+            Log.d(tag, "checkRootv2 result2 " + result2);
+        }
+        isRooted = isApkInstalled && result2 ;
+
+        if (isRooted)
+            Toast.makeText(mContext, "Root Access granted", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(mContext, "Can't get Root Access", Toast.LENGTH_SHORT).show();
+
+
+        Log.d(tag, "checkRootv2 isRooted: " + isRooted);
+        return isRooted;
+    }//checkRootv2
 
 
 // --Commented out by Inspection START (12/18/14 8:18 PM):

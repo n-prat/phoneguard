@@ -57,6 +57,7 @@ class ConnectionManager {
         // DO NOT TRY on Lollipop or FC!
         if (Build.VERSION.SDK_INT >= 21) {
             // Lollipop
+            //TODO add Lollipop way
             Log.d(tag, "Lollipop -> doing nothing... ");
         }
         else{
@@ -97,7 +98,6 @@ class ConnectionManager {
 //    }
 // --Commented out by Inspection STOP (12/18/14 8:15 PM)
 
-    //TODO On Lollipop -> Force Close
     private void setMobileDataEnabled2(Context context, boolean enabled) {
         Log.d(tag, "setMobileDataEnabled2: " + enabled);
         //http://stackoverflow.com/questions/12535101/how-can-i-turn-off-3g-data-programmatically-on-android

@@ -47,7 +47,8 @@ public class SettingsFragment extends PreferenceFragment
 
             if(state){
                 //checkRoot will ask for root if necessary(su prompt)
-                boolean isRooted = rootHandler.checkRoot();
+                //boolean isRooted = rootHandler.checkRoot();
+                boolean isRooted = rootHandler.checkRootv2();
 
                 //we set the checkbox state to the result of checkRoot
                 CheckBoxPreference checkboxRoot = (CheckBoxPreference) findPreference(KEY_ROOT);
