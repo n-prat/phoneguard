@@ -55,12 +55,5 @@ public class SettingsFragment extends PreferenceFragment
                 checkboxRoot.setChecked(isRooted);
             }
         }
-        /*if (key.equals(KEY_ROOT)) {
-
-            Preference connectionPref = findPreference(key);
-
-            // Set summary to be the user-description for the selected value
-            connectionPref.setSummary(sharedPreferences.getString(key, ""));
-        }*/
     }
 }

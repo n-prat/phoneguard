@@ -23,6 +23,13 @@
             android:dialogTitle="Enter new password"
             android:defaultValue="changeme"/>
 
+        <EditTextPreference
+            android:key="setting_prefix"
+            android:title="Prefix"
+            android:summary="The prefix for all commands"
+            android:dialogTitle="Enter new prefix (case insensitive)"
+            android:defaultValue="Phoneguard"/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>

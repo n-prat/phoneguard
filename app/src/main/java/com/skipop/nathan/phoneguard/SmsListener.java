@@ -19,6 +19,7 @@ import android.widget.Toast;
 public class SmsListener extends BroadcastReceiver {
     private Context mContext = null;
     private final String tag = "PhoneGuard SMS";
+    private static final String KEY_PREFIX = "setting_prefix";
 
 
     @Override
@@ -76,8 +77,14 @@ public class SmsListener extends BroadcastReceiver {
         String msgAddress = message.getDisplayOriginatingAddress();
         String msgBody = message.getDisplayMessageBody();
 
-        if (msgBody.startsWith("phoneguard") || msgBody.startsWith("Phoneguard")) {
-            //we have an useful message
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        String prefix = prefs.getString(KEY_PREFIX, "Phoneguard").toLowerCase();
+
+        String[] start = msgBody.split(" ", 5);
+        String firstWord = start[0];
+
+        if (firstWord.toLowerCase().equals(prefix)) {
+            //we have a correct prefix
             Log.d(tag, "command received");
 
             SecurityManager securityManager = new SecurityManager(mContext);
@@ -98,7 +105,6 @@ public class SmsListener extends BroadcastReceiver {
                         String passwd;
                         passwd = msgContent[2];
 
-                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
                         String passwdSet = prefs.getString("setting_password","not found");
 
                         if(passwd.equals(passwdSet)){
